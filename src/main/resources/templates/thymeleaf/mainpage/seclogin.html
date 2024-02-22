@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+       <meta charset="UTF-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <title>login</title>
+      <link rel="stylesheet" th:href="@{/webapp/css/login.css}" />
+      <link rel="stylesheet" th:href="@{/webapp/css/modal_page.css}" />
+      
+   </head>
+   <body>
+       <div class="login-wrapper">
+           <!-- 이미지 추가 -->
+           <img src="/webapp/img/ground.png" alt="이미지 설명" class="login-image">
+           <h2>Password</h2>
+         <form method="post" th:action="@{/mainpage/seclogincheck}" th:object="${memberDTO}">
+		    <input type="hidden" name="log_id" th:value="${log_id}" />
+		    <input type="password" name="log_pw" th:value="${log_pw}" placeholder="Enter your password" required>
+		    <input type="submit" value="확인">
+		    <input type="button" value="취소" onclick="history.go(-1);">
+		</form>
+         
+           
+       </div>
+   
+       
+      
+      
+      <!-- 스크립트 -->
+   <script th:inline="javascript">
+       /*<![CDATA[*/
+          
+        
+      
+      
+     
+
+      
+      
+       /*]]>*/    
+       
+   </script>
+      <script src="/webapp/js/shining_stars.js"></script>
+       <script src="/webapp/js/login_model.js"></script>
+   </body>
+
+</html>

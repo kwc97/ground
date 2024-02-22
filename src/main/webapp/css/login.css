@@ -1,0 +1,279 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: black;
+    overflow: hidden; /* 스크롤바를 방지하기 위해 오버플로우를 숨김 */
+}
+
+
+.login-wrapper{
+    width: 400px;
+    height: 200px;
+    padding: 40px;
+    box-sizing: border-box;
+    text-align: center; /* 텍스트 중앙 정렬 */
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+.login-image {
+    width: 150px; /* 이미지 너비 조정 */
+    height: 150px; /* 이미지 높이 조정 */
+    margin-bottom: 20px; /* 이미지와 텍스트 사이 간격 조정 */
+    border-radius: 50%;
+}
+
+.login-wrapper > h2{
+    font-size: 24px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* 내부 아이템들을 수직으로 늘리기 */
+}
+
+#login-form > input,
+#join-login-wrapper > input {
+    height: 48px;
+    margin-bottom: 16px;
+    border-radius: 6px;
+    background-color: #F8F8F8;
+    box-sizing: border-box;
+    width: 100%; /* 100% 폭을 가지도록 설정 */
+}
+
+#login-form > input::placeholder,
+#join-login-wrapper > input::placeholder {
+    color: #D2D2D2;
+}
+
+#login-form > input[type="submit"],
+#join-login-wrapper > input[type="submit"] {
+    width: 100%; /* 100% 폭을 가지도록 설정 */
+    height: 48px;
+    border-radius: 6px;
+    background-color: #1b5ac2;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+#login-form > input[name="userName"],
+input[name="userPassword"] {
+    padding-left: 10px;
+}
+#join-login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.join,.login {
+    height: 48px;
+    border-radius: 6px;
+    background-color: #1b5ac2;
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+.login {
+    padding-top: 3px;
+}
+/* 로그인 했을때 신고 누적있을 시 모달창*/
+.model {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 텍스트 중앙 정렬 */
+    justify-content: center; /* 수직 가운데 정렬 */
+    position: absolute;
+    top: 270px;
+    height: 330px;
+    width: 317px;
+    background-color: rgb(255, 255, 255);
+}
+
+.model-login {
+    position: absolute;
+    top: -100px;
+    width: 317px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    z-index: 9999;
+}
+.model > input {
+    margin-bottom: 5px;
+}
+.visivle {
+    visibility: visible;
+}
+
+.hidden {
+	display: none;
+    background-color: white;
+}
+
+#guide {
+    height: 48px;
+    border-radius: 6px;
+    border: none;
+    font-size:20px;
+    width: 310px;
+    text-align: center;
+    background-color: #1b5ac2;
+    color: #fff; /* 글씨 색을 흰색으로 설정 */
+}
+
+#gd-content {
+    height: 48px;
+    border-radius: 6px;
+    border: 1px solid rgb(187, 186, 186);
+    font-size:10px;
+    width: 310px;
+    text-align: center;
+    margin-top: 2px;
+}
+
+table {
+    border: 2px solid rgb(187, 186, 186);
+    text-align: center;
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid  rgb(187, 186, 186);
+    padding: 6px;
+    
+}
+.table-hd {
+    background-color:rgb(224, 223, 223);
+}
+
+#reason {
+    margin-top: 5px; /* 테이블과 이전 요소 간격 조절 */
+    width: 90%;
+    text-align: center; /* 텍스트 중앙 정렬 */
+}
+
+#reason td {
+    border: 1px solid rgb(187, 186, 186);
+    padding: 6px;
+}
+
+.button-close {
+    width: 60px;
+    height: 40px;
+    border-radius: 6px;
+    border: none;
+    margin-top: 10px;
+    cursor : pointer;
+}
+
+/* 배경 화면 */
+.star {
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    overflow: hidden;
+    animation-direction: alternate;
+    animation-iteration-count: infinite;
+}
+
+.style1 {
+    width: 1px;
+    height: 1px;
+}
+
+.style2 {
+    width: 2px;
+    height: 2px;
+}
+
+.style3 {
+    width: 3px;
+    height: 3px;
+}
+
+.opacity1 {
+    opacity: 1;
+}
+
+.opacity2 {
+    opacity: 0.5;
+}
+
+.opacity3 {
+    opacity: 0.1;
+}
+
+.twinkle1 {
+    animation-duration: 0.5s;
+    animation-name: twinkling;
+}
+
+.twinkle2 {
+    animation-duration: 1s;
+    animation-name: twinkling;
+}
+
+.twinkle3 {
+    animation-duration: 1.5s;
+    animation-name: twinkling;
+}
+
+.twinkle4 {
+    animation-duration: 2s;
+    animation-name: twinklingWithNoBoxShadow;
+}
+
+@keyframes twinkling {
+    0% {
+        box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.1);
+    }
+}
+
+@keyframes twinklingWithNoBoxShadow {
+    0% {
+        background-color: #ffffff;
+        box-shadow: 0 0 10px 0px rgba(255, 255, 255, 1);
+    }
+
+    20% {
+        background-color: #ffc4c4;
+        box-shadow: 0 0 10px 0px rgba(255, 196, 196, 1);
+    }
+
+    80% {
+        background-color: #c4cfff;
+        box-shadow: 0 0 10px 0px rgba(196, 207, 255, 1);
+    }
+
+    100% {
+        background-color: #ffffff;
+        box-shadow: 0 0 10px 0px rgba(255, 255, 255, 0.2);
+    }
+}

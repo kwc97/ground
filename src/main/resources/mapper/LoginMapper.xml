@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "C:\kwcSpring\springRep\ground\src\main\resources\mapper\mybatis-3-mapper.dtd">
+<mapper namespace="com.ground.mapper.LoginMapper">
+
+    <select id="loginCheck" resultType="LoginDTO">
+        <![CDATA[
+              SELECT CASE
+              WHEN EXISTS (SELECT 1 FROM admin WHERE admin_account=#{admin_account_or_log_id} AND ad_pw=#{ad_pw_or_log_pw})
+                  THEN ad_nickname
+              WHEN EXISTS (SELECT 1 FROM member WHERE log_id=#{admin_account_or_log_id} AND log_pw=#{ad_pw_or_log_pw})
+                  THEN user_name
+              ELSE NULL
+              END
+       ]]>
+   </select>
+   
+<select id="loginCheck1"  parameterType="LoginDTO" resultType="Integer">
+     <![CDATA[ 
+        SELECT COALESCE(user_id, -1) AS user_id
+        FROM member
+        WHERE log_id=#{admin_account_or_log_id} AND log_pw=#{ad_pw_or_log_pw}
+     ]]>   
+ </select>
+
+   <select id="authenticateAsAdmin" parameterType="LoginDTO" resultType="String">
+       <![CDATA[
+           SELECT admin_account FROM admin WHERE admin_account=#{admin_account_or_log_id} AND ad_pw=#{ad_pw_or_log_pw}
+       ]]>
+   </select>
+
+   <select id="authenticateAsUser" parameterType="LoginDTO" resultType="String">
+       <![CDATA[
+           SELECT user_name FROM member WHERE log_id=#{admin_account_or_log_id} AND log_pw=#{ad_pw_or_log_pw}
+       ]]>
+   </select>
+   
+   <select id="getAc_num" parameterType="LoginDTO" resultType="int">
+       <![CDATA[
+		SELECT ac_num FROM member WHERE log_id=#{admin_account_or_log_id}
+       ]]>
+   </select>
+   
+   <select id="getAccurInfo" parameterType="String" resultType="AccurDTO">
+       <![CDATA[
+           SELECT a.ac_type, a.updateDate, m.log_id
+		FROM accur a
+		JOIN post p ON a.post_id = p.post_id
+		JOIN home h ON p.mh_id = h.mh_id
+		JOIN member m ON h.user_id = m.user_id
+		WHERE m.log_id=#{admin_account_or_log_id}
+		ORDER BY a.updateDate DESC
+		LIMIT 1;
+       ]]>
+   </select>
+   
+   <select id="getAcType" parameterType="AccurDTO" resultType="String">
+       <![CDATA[
+           SELECT a.ac_type, a.updateDate, m.log_id
+		FROM accur a
+		JOIN post p ON a.post_id = p.post_id
+		JOIN home h ON p.mh_id = h.mh_id
+		JOIN member m ON h.user_id = m.user_id
+		WHERE m.log_id=#{admin_account_or_log_id}
+		ORDER BY a.updateDate DESC
+		LIMIT 1;
+       ]]>
+   </select>
+   
+   <select id="getUpdateDate" parameterType="AccurDTO" resultType="Date">
+       <![CDATA[
+           SELECT a.ac_type, a.updateDate, m.log_id
+		FROM accur a
+		JOIN post p ON a.post_id = p.post_id
+		JOIN home h ON p.mh_id = h.mh_id
+		JOIN member m ON h.user_id = m.user_id
+		WHERE m.log_id=#{admin_account_or_log_id}
+		ORDER BY a.updateDate DESC
+		LIMIT 1;
+       ]]>
+   </select>
+   
+   <select id="getPost_id" parameterType="AccurDTO" resultType="Integer">
+       <![CDATA[
+        SELECT COALESCE(a.post_id, -1) AS post_id
+        FROM accur a
+        JOIN post p ON a.post_id = p.post_id
+        JOIN home h ON p.mh_id = h.mh_id
+        JOIN member m ON h.user_id = m.user_id
+        WHERE m.log_id=#{admin_account_or_log_id}
+        ORDER BY a.updateDate DESC
+        LIMIT 1;
+       ]]>
+   </select>
+   
+<select id="getTitle" parameterType="AccurDTO" resultType="String">
+    <![CDATA[
+        SELECT p.title
+        FROM accur a
+        JOIN post p ON a.post_id = p.post_id
+        JOIN home h ON p.mh_id = h.mh_id
+        JOIN member m ON h.user_id = m.user_id
+        WHERE m.log_id=#{post_id}
+        ORDER BY a.updateDate DESC
+        LIMIT 1;
+    ]]>
+	</select>
+    
+</mapper>

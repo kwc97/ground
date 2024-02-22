@@ -1,0 +1,461 @@
+	#my_modal, #second_modal ,#password_modal,#secondpw_modal{
+	    display: none;
+	    width: 340px; /* 변경된 너비 */
+	    height: 350px; /* 변경된 높이 */
+	    padding: 20px 60px;
+	    background-color: #fefefe;
+	    border: 1px solid #888;
+	    border-radius: 3px;
+	    text-align: center;
+	    position: fixed;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	    z-index: 9999; /* 조절된 z-index */
+	}
+	
+	#third_modal, #nick_modal{
+	    display: none;
+	    width: 300px; /* 변경된 너비 */
+	    height: 470px;
+	    padding: 20px;
+	    background-color: #fefefe;
+	    border: 1px solid #888;
+	    border-radius: 3px;
+	    text-align: center;
+	}
+	#fourth_modal {
+	    position: fixed;
+	    display: none;
+	    width: 400px; /* 변경된 너비 */
+	    height: 670px;
+	    padding: 15px;
+	    background-color: #fefefe;
+	    border: 1px solid #888;
+	    box-sizing: border-box;
+	    border-radius: 3px;
+	    text-align: center;
+	    left: 50%;
+	    top: 50%;
+	    transform: translate(-50%, -50%);
+	    z-index: 9999;
+	}
+	#overlay {
+	    display: none;
+	    position: fixed;
+	    top: 0;
+	    left: 0;
+	    width: 100%;
+	    height: 100%;
+	    background-color: rgba(0, 0, 0, 0.5);
+	    z-index: 9990;
+	}
+
+	#secondpw_modal p {
+	    margin-top: 20px;
+	}
+	
+	#secondpw_modal button {
+	    width: 220px;
+	    height: 50px;
+	    background-color: #e2e2e2;
+	    border: 1px solid white;
+	    cursor: pointer;
+	
+	}
+	
+	#secondpw_modal input {
+	    width: 100%;
+	    padding: 10px;
+	    margin-bottom: 10px;
+	    box-sizing: border-box;
+	}
+	
+	#secondpw_modal label {
+	    display: block;
+	    text-align: left;
+	    margin-top: 10px;
+	    margin-bottom: 15px;
+	}
+	
+	#secondpw_modal .info-pair {
+	    display: flex;
+	    align-items: center;
+	    margin-bottom: 15px;
+	}
+	
+	#secondpw_modal .label-container {
+	    width: 80px;
+	}
+	
+	#secondpw_modal .content-container {
+	    margin-left: 5px;
+	}
+	
+	#secondpw_modal .signup-container {
+	    text-align: center;
+	    width: 200px;
+	    height: 370px;
+	}
+	
+	#secondpw_modal .signup-container label {
+	    display: flex;
+	    align-items: center;
+	    text-align: left;
+	    margin-top: 10px;
+	    margin-bottom: 15px;
+	}
+	
+	#secondpw_modal .signup-container div {
+	    display: flex;
+	    align-items: center;
+	}
+	
+	#secondpw_modal .signup-container label span,
+	#secondpw_modal .signup-container label p {
+	    margin-left: 10px;
+	}
+	
+	#secondpw_modal .signup-container input,
+	#secondpw_modal .signup-container select,
+	#secondpw_modal .signup-container p {
+	    width: 100%;
+	    padding: 7px;
+	    margin-bottom: 10px;
+	    box-sizing: border-box;
+	    border-top: 1px solid white;
+	    border-left: 1px solid white;
+	    border-right: 1px solid white;
+	    border-bottom: 1px solid red;
+	}
+	
+	
+	.modal_close_btn3 {
+	    width: 500px;
+	    height: 50px;
+	    background-color: #e2e2e2;
+	    border: 1px solid white;
+	    border-radius: 5px;
+	    margin-top: 120px;
+	    cursor: pointer;
+	}
+	
+	#my_modal h2, #second_modal h2, #third_modal h2,  #nick_modal h2, #password_modal h2, #secondpw_modal h2{
+	    margin-top: 20px;
+	}
+	#fourth_modal h2 {
+		margin-top: 5px;
+	}
+	
+	.info-pair {
+	    display: flex;
+	    align-items: center;
+	    margin-bottom: 15px;
+	}
+	
+	.label-container {
+	    width: 80px; /* 레이블 컨테이너의 너비 조정 */
+	}
+	
+	.content-container {
+	    margin-left: 5px; /* 레이블과 내용 사이의 간격을 조절 */
+	}
+	
+	
+	.signup-container, .signup-container-1 {
+	    text-align: center;
+	    width: 200px;
+	    height: 370px;
+	    z-index: 9999;
+	}
+	
+	
+	.signup-container label {
+	    display: flex;
+	    align-items: center; /* 레이블과 입력 요소를 세로 중앙 정렬 */
+	    text-align: left;
+	    margin-top: 10px;
+	    margin-bottom: 15px;
+	}
+	
+	.signup-container-1 label{
+		display: flex;
+	    align-items: center;
+	    text-align: left;
+	    margin-top: 3px;
+	    margin-bottom: 15px;
+	    
+	}
+	
+	.signup-container div , .signup-container-1 div{
+	    display: flex; /* 추가: flex로 설정하여 가로로 나열되도록 함 */
+	    align-items: center; /* 추가: 가로로 나열된 요소들을 세로 중앙 정렬 */
+	}
+	
+	.signup-container label span,
+	.signup-container label p,
+	.signup-container-1 span,
+	.signup-container-1 p{
+	    margin-left: 10px; /* 작성자와 내용 사이의 간격을 조절합니다. */
+	}
+	
+	.signup-container input,
+	.signup-container select,
+	.signup-container p,
+	.signup-container-1 input,
+	.signup-container-1 select,
+	.signup-container-1 p{
+	    width: 100%;
+	    padding: 7px;
+	    margin-bottom: 10px;
+	    box-sizing: border-box;
+	    border-top: 1px solid white;
+	    border-left: 1px solid white;
+	    border-right: 1px solid white;
+	    border-bottom: 1px solid red;
+	}
+	.radio-container {
+	    display: flex;
+	    align-items: center;
+	    flex-direction: row; /* 라디오 버튼을 가로로 정렬 */
+	    margin-bottom: 15px;
+	    margin-top: -18px;
+	}
+	
+	.radio-label {
+	    margin-left: 5px;
+	    display: flex;
+	    align-items: center;
+	}
+	
+	#male,
+	#female {
+	    margin-right: 5px; /* 라디오 사이의 간격을 조절합니다. */
+	    width: 30px;
+	
+	}
+	
+	#male + .radio-label::before,
+	#female + .radio-label::before {
+	    content: '\00a0\00a0'; /* 공백 추가로 레이블과 체크박스 간의 간격을 늘립니다. */
+	}
+	
+	
+	.button-container {
+	    display: flex;
+	    justify-content: space-between;
+	    margin-top: 20px;
+	    position: absolute; /* 추가된 부분: 위치를 절대 위치로 변경 */
+	    bottom: 20px; /* 추가된 부분: 아래 여백을 설정하여 팝업 내부에 유지 */
+	    width: 90%; /* 추가된 부분: 너비를 100%로 설정하여 창에 맞춤 */
+		}
+		
+	.button-container1,.button-container2 {
+	    display: flex;
+	    justify-content: space-between;
+	    margin-top: 20px;
+	    position: absolute; /* 추가된 부분: 위치를 절대 위치로 변경 */
+	    bottom: 20px; /* 추가된 부분: 아래 여백을 설정하여 팝업 내부에 유지 */
+	    width: 65%; /* 추가된 부분: 너비를 100%로 설정하여 창에 맞춤 */
+		}
+	.button-container3 {
+	    display: flex;
+	    justify-content: space-between;
+	    margin-top: 20px;
+	    position: absolute; /* 추가된 부분: 위치를 절대 위치로 변경 */
+	    bottom: 20px; /* 추가된 부분: 아래 여백을 설정하여 팝업 내부에 유지 */
+	    width: 65%; /* 추가된 부분: 너비를 100%로 설정하여 창에 맞춤 */
+		}
+		
+	.button-container4 {
+	    display: flex;
+	    justify-content: space-between;
+	    margin-top: 20px;
+	    position: absolute; /* 추가된 부분: 위치를 절대 위치로 변경 */
+	    bottom: 20px; /* 추가된 부분: 아래 여백을 설정하여 팝업 내부에 유지 */
+	    width: 90%; /* 추가된 부분: 너비를 100%로 설정하여 창에 맞춤 */
+		}
+	
+	
+	/* 추가된 부분 */
+	.radio-container label {
+	    display: flex;
+	    align-items: center;
+	}
+	
+	
+	
+	.radio-label::before {
+	    content: '\00a0\00a0'; /* 공백 추가로 레이블과 체크박스 간의 간격을 늘립니다. */
+	}
+	
+	.btn-1, .btn-2{
+	    width: 80px;
+	    height: 50px;
+	    background-color: #e2e2e2;
+	    border:1px solid white;
+	    border-radius: 5px;
+	    margin-top: 9px;
+	    cursor: pointer;
+	}
+	.btn-3,.btn-4 {
+		width: 80px;
+	    height: 50px;
+	    background-color: #e2e2e2;
+	    border:1px solid white;
+	    border-radius: 5px;
+	    margin-top: 9px;
+	    cursor: pointer;
+	}
+	
+	.modal_close_btn {
+	    width: 220px;
+	    height:50px;
+	    background-color: #e2e2e2;
+	    border:1px solid white;
+	    border-radius: 5px;
+	    margin-top: 120px;
+	}
+	.modal_close_btn2 {
+	    width: 400px;
+	    height:50px;
+	    background-color: #e2e2e2;
+	    border:1px solid white;
+	    border-radius: 5px;
+	    margin-top: 120px;
+	    cursor: pointer;
+	}
+	.modal_close_btn1{
+	    width: 100px;
+	    height:50px;
+	    background-color: #e2e2e2;
+	    border:1px solid white;
+	    border-radius: 5px;
+	    margin-top: 10px;
+	}
+	
+	#second_modal, #password_modal {
+	    display: none;
+	}
+	
+	#second_modal {
+	    display: none;
+	    width: 340px; /* 변경된 너비 */
+	    height: 350px; /* 변경된 높이 */
+	    background-color: #fefefe;
+	    border: 1px solid #888;
+	    border-radius: 3px;
+	    text-align: center;
+	    position: fixed;
+	    top: 50%;
+	    left: 50%;
+	    transform: translate(-50%, -50%);
+	    z-index: 10001; /* 조절된 z-index */
+	}
+	
+	#password_modal {
+	    display: none;
+	    width: 340px;
+	    height: 440px;
+	    padding: 20px 60px;
+	    background-color: #fefefe;
+	    border: 1px solid #888;
+	    border-radius: 3px;
+	    text-align: center;
+	}
+	
+	#password_modal h2 {
+	    margin-top: 10px;
+	    padding-bottom: 6px;
+	}
+	
+	#password_modal .modal_close_btn {
+	    position: absolute;
+	    top: 10px;
+	    right: 10px;
+	}
+	
+	
+	#password_modal button {
+	    width: 90px;
+	    height: 50px;
+	    background-color: #e2e2e2;
+	    border: 1px solid white;
+	    cursor: pointer;
+	}
+	
+	#password_modal input {
+	    width: 100%;
+	    padding: 10px;
+	    margin-bottom: 10px;
+	    box-sizing: border-box;
+	}
+	
+	#password_modal label {
+	    display: block;
+	    text-align: left;
+	    margin-top: 10px;
+	    margin-bottom: 15px;
+	}
+	
+	.radio-container {
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    margin-bottom: 2px;
+	}
+	
+	.radio-label {
+	    margin-left: 5px;
+	}
+	
+	#password_modal, #second_modal {
+	    display: none;
+	}
+	
+	.email-input {
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	}
+	
+	.email-input .at-symbol {
+	    margin: 0 5px;
+	}
+	
+	.checkbox-container {
+	    display: flex;
+	    flex-wrap: wrap;
+	    text-align: left;
+	    margin-top: 10px;
+	    margin-bottom: 15px;
+	}
+	
+	.checkbox-pair {
+	    display: flex;
+	    align-items: center;
+	    margin-right: 20px; /* 체크박스 쌍 간의 간격을 조절 */
+	}
+	
+	.checkbox-container input[type="checkbox"] {
+	    margin-right: 5px; /* 각 체크박스 사이의 간격 조절 */
+	    width: 20px;
+	}
+	
+	
+	#spam,
+	#obscene,
+	#illegal-info,
+	#hate-speech {
+	    margin-bottom: 10px; /* 각 체크박스 쌍 간의 간격을 조절합니다. */
+	}
+	
+	#reason {
+	    width: 100%;
+	    height: 6.25em;
+	    border: 1px solid #e2e2e2;
+	    border-radius: 5px;
+	    resize: none;
+	  
+	}
+	

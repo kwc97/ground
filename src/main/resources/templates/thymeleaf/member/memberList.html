@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Member List Page</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+	</head>
+	<style>
+		.btn-myButton {
+			
+			background-color: #00FFFF;
+			border: none;
+			color: #000;
+			padding: 10px 50px;
+			margin-bottom : 10px;
+			float: right;
+		}
+		.btn-myButton:hover{
+			background-color: #000;
+			color: #fff;
+			transition: all .35s;
+			cursor: pointer; /* wait, crosshair, not-allowed, zoom-in, grab */
+			
+		}
+	</style>
+	<body>
+	
+		<div class="container">
+		
+			<h3 style="text-align:center; padding: 50px 0 20px">
+				Member List Page
+				<small class="text-muted">by Bs v4.x</small>
+			</h3>
+			
+			
+				<button class="btn-myButton" onclick="location.href='/member/memberWriteFormNew';">Member Join</button>
+			
+			
+			
+			<table class="table table-striped text-center table-hover table-sm">
+				<caption>List of members</caption>
+				<thead class="thead-dark">
+					<tr>
+						<th width=100>user_id</th>
+						<th>log_id</th>
+						<th>log_pw</th>
+						<th>user_name</th>
+						<th>user_gender</th>
+						<th>user_birth</th>
+						<th>img_path</th>
+						<th>nickname</th>
+						<th>ac_num</th>
+						<th>createDate</th>
+						<th>updateDate</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="row : ${memberList}">
+						<th th:text="${row.user_id}"></th>
+						<th th:text="${row.log_id}"></th>
+						<th th:text="${row.log_pw}"></th>
+						<th th:text="${row.user_name}"></th>
+						<th th:text="${row.user_gender}"></th>
+						<th th:text="${row.user_birth}"></th>
+						<th th:text="${row.img_path}"></th>
+						<th th:text="${row.nickname}"></th>
+						<th th:text="${row.ac_num}"></th>
+						<th th:text="${row.createDate}"></th>
+						<th th:text="${row.updateDate}"></th>
+						<th><a href="#" th:href="@{/member/memberWriteFormNew( user_id=${row.user_id} )}" style="color: #85BCA6">수정</a></th>
+						<th><a href="#none" th:onclick="btnDel([[${row.user_id}]]);" style="color: #c1c100">삭제</a></th>
+						<!-- 
+								설명:
+								클릭 시 스크롤이 최상단으로 이동하는 것 방지
+								1. onclick에 return false;
+								2. a 태그에 javascript: return false; 또는 javascript:void(0);
+								3. a 태그에 href="#none"또는 아무 문자나 붙여주면 됨.
+						 -->
+					</tr>	
+					<tr>
+						<td class="bg-primary"></td>
+						<td class="bg-info" colspan=10></td>
+						<td class="bg-success" colspan=2></td>
+					</tr>			
+				</tbody>
+			</table>
+			
+			<div class="text-center">
+				<button type="button" class="btn btn-outline-warning rounded-0" onclick="history.go(-1);" >← BACK</button>
+				<button type="button" class="btn btn-outline-secondary rounded-0" onclick="location.href='/';" >↑ MAIN</button>
+				<button type="button" class="btn btn-primary rounded-0" >MEMBER JOIN</button>
+				
+			</div>
+			 
+			<div class="mb-5">
+				&nbsp;
+			</div>
+			
+		</div>
+		
+		<script>
+			// 버튼 가져오기
+			const btnMyButton = document.querySelector( '#btn-myButton');
+			console.log(btnMyButton);
+			
+			// 버튼 클릭 시 --> 할 일 처리
+			btnMyButton.addEventListener( 'click', () =>{
+				location.href = '/member/memberWriteFormNew';
+			});
+			
+			// 삭제 클릭 시 --> 컨펌 후 --> 할 일 처리
+			function btnDel( user_id ){
+				
+				// 컨펌 처리
+				if( confirm(user_id + "번 회원을 정말 삭제하시겠습니까?") == true){
+					location.href = '/member/memberDeleteOk?user_id=' + user_id;
+				}
+				else {
+					return;
+				}
+			}
+		</script>
+
+	</body>
+</html>

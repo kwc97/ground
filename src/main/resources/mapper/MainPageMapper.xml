@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper SYSTEM "C:\kwcSpring\springRep\ground\src\main\resources\mapper\mybatis-3-mapper.dtd">
+
+<!-- <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd"> -->
+<mapper namespace="com.ground.mapper.MainPageMapper">
+	
+	
+	
+	<select id="getAllPosts" resultType="PostDTO">
+       <![CDATA[       
+	   SELECT p.* FROM post p JOIN home h ON p.mh_id = h.mh_id JOIN member m ON h.user_id = m.user_id WHERE m.user_id != #{user_id} ORDER BY p.post_id DESC;
+       ]]>
+    </select>
+	
+	<select id="selectFollowingNum" parameterType="int">
+		
+		<![CDATA[ 
+			 SELECT COUNT(*) FROM follow WHERE user_id = #{user_id};
+		]]>
+	</select>
+	
+	<select id="selectFollowNum" parameterType="int">
+		
+		<![CDATA[ 
+			 SELECT COUNT(*) FROM follow WHERE f_user_id = #{user_id};
+		]]>
+	</select>
+	
+	<select id="selectMemberOne" parameterType="String" resultType="MemberDTO">
+		<![CDATA[ 
+			SELECT * FROM member WHERE log_id = #{log_id};			
+		]]>
+	</select>
+	
+	<select id="selectMemberOne2" parameterType="int" resultType="MemberDTO">
+		<![CDATA[ 			
+			SELECT m.* FROM post p JOIN home h ON p.mh_id = h.mh_id JOIN member m ON h.user_id = m.user_id WHERE p.mh_id = #{mh_id} LIMIT 1;
+		]]>
+	</select>
+	
+	<insert id="insertLike">
+		<![CDATA[
+    		INSERT INTO post_like (user_id, post_id) VALUES (#{user_id}, #{post_id})
+    	]]>
+	</insert>
+	
+	<select id="selectPostNum" parameterType="int" resultType="int">
+		<![CDATA[ 
+			SELECT COUNT(*) FROM post_like WHERE post_id = #{post_id};			
+		]]>
+	</select>
+	
+	<select id="selectFollowOne" parameterType="int" resultType="FollowDTO">
+		<![CDATA[ 
+			SELECT * FROM follow WHERE user_id = #{user_id};			
+		]]>
+	</select>
+	
+	<select id="getAllFollows" resultType="FollowDTO">
+       <![CDATA[       
+	   SELECT f.* FROM follow f  JOIN member m ON f.user_id = m.user_id WHERE m.user_id = #{user_id} ;
+       ]]>
+    </select>
+    
+    <select id="selectMemberOne3" parameterType="int" resultType="MemberDTO">
+		<![CDATA[ 
+			SELECT * FROM member WHERE user_id = #{user_id};			
+		]]>
+	</select>
+	
+	<select id="getAllFollows2" resultType="FollowDTO">
+       <![CDATA[       
+	   SELECT f.* FROM follow f  JOIN member m ON f.user_id = m.user_id WHERE f_user_id = #{user_id} ;
+       ]]>
+    </select>
+	
+</mapper>
+
+
+
+
+

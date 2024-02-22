@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS 레이아웃 - 2단 레이아웃</title>    
+    <link rel="stylesheet" href="/webapp/css/follow.css">
+</head>
+<body>
+    <div id="container">
+        <header id="header">
+            
+            <div class="logo">            
+                <a id="logo">
+                    <img src="/webapp/img/ground.png" alt="로고" width="40" height="40">
+                    <h1>Ground</h1>
+                </a>
+            </div>
+           
+            
+        </header> 
+
+        <!--  -->
+
+        <article id="follow-article">
+
+            <section id="follow-sec">
+            <h1>Follower</h1>
+            <div class="search-bar-2">
+                <input type="text" placeholder="검색어 입력" id="sch-bar">
+                <button id="btn2">검색</button>
+              </div>
+            </section>
+            <br>
+
+
+            <section id="contents">
+        <div class="wrap">
+            <!-- follows 리스트 반복 -->
+            <div th:each="follower : ${followers}" class="container">
+                <div class="top">
+                    <div>
+                        <img th:src="${follower.member.img_path}" alt="" id="profile">
+                        <span th:text="${follower.member.nickname}"></span>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div th:text="${follower.member.user_name}">홍길동</div> <!-- 여기에 팔로우 정보에 맞는 내용을 넣어주시면 됩니다 -->
+                    <div th:text="${follower.createDate}">2022.6.18</div> <!-- 팔로우 날짜 등 -->
+                </div>
+            </div>
+            <!-- follows 리스트 반복 종료 -->
+        </div>
+    </section>
+</article>
+
+<!--  -->
+    <article id="Following-article">
+
+        <section id="follow-sec">
+            <h1>Following</h1>
+            <div class="search-bar-2">
+                <input type="text" placeholder="검색어 입력" id="sch-bar">
+                <button id="btn2">검색</button>
+              </div>
+            </section>
+            <br>
+
+
+
+        <section id="contents">
+        <div class="wrap">
+            <!-- follows 리스트 반복 -->
+            <div th:each="follow : ${follows}" class="container">
+                <div class="top">
+                    <div>
+                        <img th:src="${follow.member.img_path}" alt="" id="profile">
+                        <span th:text="${follow.member.nickname}"></span>
+                    </div>
+                </div>
+                <div class="bottom">
+                    <div th:text="${follow.member.user_name}">홍길동</div> <!-- 여기에 팔로우 정보에 맞는 내용을 넣어주시면 됩니다 -->
+                    <div th:text="${follow.createDate}">2022.6.18</div> <!-- 팔로우 날짜 등 -->
+                </div>
+            </div>
+            <!-- follows 리스트 반복 종료 -->
+        </div>
+    </section>
+    </article>
+</body>
+
+</html>

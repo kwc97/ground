@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <title>login</title>
+		<link rel="stylesheet" th:href="@{/webapp/css/login.css}" />
+		<link rel="stylesheet" th:href="@{/webapp/css/modal_page.css}" />
+		
+	</head>
+	<body>
+	    <div class="login-wrapper">
+	        <!-- 이미지 추가 -->
+		    <img src="/webapp/img/ground.png" alt="이미지 설명" class="login-image">
+		    <h2>Login</h2>
+		<form method="post" action="/login/loginCheck" id="login-form" th:object="${loginDTO}">
+		    <input type="text" name="admin_account_or_log_id" th:value="${loginDTO?.adminDTO != null ? loginDTO.adminDTO.admin_account : (loginDTO?.memberDTO != null ? loginDTO.memberDTO.log_id : '')}" placeholder="Email">
+		    <input type="password" name="ad_pw_or_log_pw" th:value="${loginDTO?.adminDTO != null ? loginDTO.adminDTO.ad_pw : (loginDTO?.memberDTO != null ? loginDTO.memberDTO.log_pw : '')}" placeholder="Password">
+		    <div th:if="${message == 'error'}" style="color:red;">아이디 또는 비밀번호가 일치하지 않습니다.</div>
+		    <input type="submit" value="Login" class="login">
+		</form>
+		    <div id="join-login-wrapper">
+		        <input type="submit" value="회원가입" class="join popup_open_btn" id="popup_open_btn">
+		        <input type="submit" value="아이디찾기" class="find-modal-btn find-id-btn">
+		        <input type="submit" value="비밀번호찾기" class="find-modal-btn find-password-btn">
+		    </div>
+		</div>
+	
+	    <div id="model-login" class="model-login hidden">
+	        <div class="model" th:if="${ac_num == 1 or ac_num ==2 or ac_num ==3}" >
+	            <input type="text" value="이용 제한 안내" id="guide">
+	            <input type="text" value="요청하신 서비스는 아래의 사유로 이용이 제한 되었습니다." id="gd-content">
+	            <table id="reason" th:if="${ac_num == 1 or ac_num ==2 or ac_num ==3}">
+	                <tr class="table-hd">
+	                    <td>제한사유</td>
+	                    <td th:text="${acType}"></td>
+	                </tr>
+	                <tr>
+	                    <td>상세내용</td>
+	                    <td th:text="${postTitle}"></td>
+	                </tr>
+	                <tr th:if="${ac_num == 1}">
+	                    <td rowspan="3" >제한 기간</td>
+	                    <td style="color: red;">1차 경고</td>
+	                </tr>
+					<tr th:if="${ac_num == 1}">
+					    <td th:text="${#dates.format(acupdateDate, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
+					</tr>
+					<tr th:if="${ac_num == 1}">
+					    <td th:text="${#dates.format(threeDaysLater, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
+					</tr>
+					<tr th:if="${ac_num == 2}">
+	                    <td rowspan="3" >제한 기간</td>
+	                    <td style="color: red;">2차 경고</td>
+	                </tr>
+					<tr th:if="${ac_num == 2}">
+					    <td th:text="${#dates.format(acupdateDate, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
+					</tr>
+					<tr th:if="${ac_num == 2}">
+					    <td th:text="${#dates.format(sevenDaysLater, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
+					</tr>
+	                <tr th:if="${ac_num == 3}">
+	                    <td rowspan="3" >제한 기간</td>
+	                    <td style="color: red;" th:text="${#dates.format(acupdateDate, 'yyyy년 MM월 dd일 HH시 mm분 ss초')}"></td>
+	                </tr>
+	                <tr th:if="${ac_num == 3}">
+	                    <td style="color: red;" th:text="영구정지"></td>
+	                </tr>
+	            </table>
+	            <button class="button-close">확인</button>
+	        </div>
+	    </div>
+	 
+	 	<div id="overlay"></div>
+	 	
+	    <!-- 회원가입 모달 창-->
+	
+		<form id="fourth_modal" class="signup-container-1" th:action="@{/member/memberWriteOk}" th:object="${memberDTO}" method="POST">
+		    <h2>회원가입</h2>
+		    <label for="email_find">이메일</label>
+		    <div class="email-input">
+		        <input type="text" id="email_find" name="log_id" placeholder="이메일 앞자리" th:value="${memberDTO.log_id}">
+		        <span class="at-symbol">@</span>
+		        <select name="email-domain" th:field="*{emailDomain}">
+		            <option value="naver.com">naver.com</option>
+		            <option value="gmail.com">gmail.com</option>
+		            <option value="daum.net">daum.net</option>
+		            <!-- 다른 이메일 도메인도 추가 가능 -->
+		        </select>
+		    </div>
+		    <small id="emailHelp"></small>
+		
+		    <label for="password">비밀번호</label>
+		    <input type="password" id="password" name="log_pw" placeholder="비밀번호를 입력하세요" th:value="${memberDTO.log_pw}" required>
+		    <small id="passwordHelp"></small>
+		
+		    <label for="confirm-password">비밀번호 재확인</label>
+		    <input type="password" id="confirm-password" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요" >
+		    <small id="confirmPasswordHelp"></small>
+		
+		    <label for="name">이름</label>
+		    <input type="text" id="name" name="user_name" placeholder="이름을 입력하세요" oninput="checkPassword()" th:field="${memberDTO.user_name}">
+		    <small id="nameHelp"></small>
+		
+		    <label for="nickname">닉네임</label>
+		    <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력하세요" oninput="checkPassword()" th:field="${memberDTO.nickname}"  maxlength="10">
+		    <small id="nickNameHelp"></small>
+		
+		    <label for="birthdate">생년월일</label>
+		    <input type="text" id="birthdate" name="user_birth" placeholder="생년월일 6자리를 입력하세요. (ex.980215)" oninput="checkPassword()" th:field="${memberDTO.user_birth}">
+		    <small id="birthdateHelp"></small>
+		
+		    <label>성별</label>
+		    <br>
+		    <div class="radio-container">
+		        <label class="radio-label" for="male">남자</label>
+		        <input type="radio" id="male" name="user_gender" th:checked="${memberDTO.user_gender == '남자'}" th:value="남자" onclick="checkPassword()">
+		
+		        <label class="radio-label" for="female">여자</label>
+		        <input type="radio" id="female" name="user_gender" th:checked="${memberDTO.user_gender == '여자'}" th:value="여자" onclick="checkPassword()">
+		    </div>
+		    <small id="genderHelp"></small>
+		
+		    <div class="button-container">
+		        <button type="submit" class="modal_close_btn1">회원가입</button>
+		        <button type="button" class="modal_close_btn1 modal_cancel_btn">취소</button>
+		    </div>
+		</form>
+	
+	    <!-- 아이디 찾기 모달 창-->
+		<form id="my_modal" class="signup-container" th:object="${memberDTO}" action="/member/memberFindId" method="post">
+		    <h2>아이디 찾기</h2>
+		
+		    <label for="username">이름</label>
+		    <input type="text" id="username" name="user_name" placeholder="이름을 입력하세요" />
+		
+		    <label for="userbirth">생년월일</label>
+		    <input type="text" id="userbirth" name="user_birth" placeholder="ex 980212" />
+		
+		    <div th:if="${errorMessage == 'errorMsg'}" style="color:red;">아이디를 찾을 수 없습니다.</div>
+		
+		    <div class="button-container1">
+		        <button class="btn-1" type="button">확인</button>
+		        <button class="btn-2" type="button">취소</button>
+		    </div>
+		</form>
+		
+		<div id="second_modal" class="signup-container">
+		    <h2>회원님의 아이디 찾기</h2>
+		    <p id="id_message"></p> <!-- 아이디 메시지를 여기에 표시 -->
+		    <div class="button-container2">
+		        <button type="button" class="modal_close_btn2">확인</button>
+		    </div>
+		</div>
+	
+	    <!-- 비밀번호 찾기 모달 창 -->
+	    <form id="password_modal" class="signup-container" th:object="${memberDTO}" action="/member/memberFindPw" method="post">
+	        <h2>비밀번호 찾기</h2>
+	
+	        <label for="id">아이디</label>
+	        <input type="email" id="logid" name="log_id" placeholder="아이디를 입력하세요" />
+	
+		    <label for="username">이름</label>
+		    <input type="text" id="user__name" name="user_name" placeholder="이름을 입력하세요" />
+	
+		    <label for="userbirth">생년월일</label>
+		    <input type="text" id="user__birth" name="user_birth" placeholder="ex 980212" />
+	
+	        <div class="button-container3">
+	            <button class="btn-3" type="button" >확인</button>
+	            <button class="btn-4" type="button" >취소</button>
+	        </div>        
+	    </form>
+	
+		<div id="secondpw_modal" class="signup-container">
+		    <h2>회원님 비밀번호 찾기</h2>
+		    <p style="color: black;" id="password_message"></p> <!-- 비밀번호가 존재하는 경우 메시지 표시 -->
+		    <p style="color: red;" id="error_message">아이디 또는 이름 또는 생년월일을 잘못 적으셨습니다.</p> <!-- 비밀번호가 존재하지 않는 경우 메시지 표시 -->
+		
+		    <div class="button-container4">
+		        <button type="button" class="modal_close_btn3" >확인</button>
+		    </div>
+		</div>
+	    
+		<div id="overlay"></div>
+		
+		<!-- 스크립트 -->
+	<script th:inline="javascript">
+	    /*<![CDATA[*/
+		   	document.getElementById('email_find').addEventListener('input', checkDuplicateId);
+			document.getElementById('nickname').addEventListener('input', checkDuplicateNickname);
+			
+			document.addEventListener('DOMContentLoaded', function() {
+			    var ac_num = 1; // 테스트용으로 ac_num 값을 1로 설정
+			    var daysToShowModal = 3; // 기본 값
+			
+			    // ac_num 값에 따라 모달 표시 기간 설정
+			    if (ac_num === 1 || ac_num === 2 || ac_num === 3) {
+			        showModal('model-login');
+			        // 배경 클릭 비활성화
+			        disableBackgroundClick();
+			        // 모달 닫기 및 페이지 이동 설정
+			        daysToShowModal = (ac_num === 1) ? 3 : (ac_num === 2) ? 7 : -1;
+			        if (daysToShowModal !== -1) {
+			            setTimeout(function() {
+			                closeModal('model-login');
+			            }, daysToShowModal * 24 * 60 * 60 * 1000);
+			        }
+			    }
+			});
+	    
+			// 아이디 찾기 모달에서 확인 버튼 클릭 시 이벤트 처리
+			document.querySelector('#my_modal .btn-1').addEventListener('click', function(event) {
+			    // 폼 데이터 수집
+			    var formData = new FormData(document.getElementById('my_modal'));
+
+			    // AJAX 요청
+			    var xhr = new XMLHttpRequest();
+			    xhr.open('POST', '/member/memberFindId');
+			    xhr.onload = function() {
+			        if (xhr.status === 200) {
+			            var responseData = JSON.parse(xhr.responseText);
+
+			            if (responseData.foundId) {
+			                document.getElementById('second_modal').style.display = 'block';
+			                document.getElementById('id_message').innerText = "회원님의 아이디는 " + responseData.foundId + "입니다.";
+			                document.getElementById('id_message').style.color = 'black'; // 검은색으로 변경
+			            } else {
+			                document.getElementById('second_modal').style.display = 'block';
+			                document.getElementById('id_message').innerText = responseData.errorMessage;
+			                document.getElementById('id_message').style.color = 'red'; // 빨간색으로 변경
+			            }
+			        } else {
+			            console.error('Request failed. Error: ' + xhr.statusText);
+			        }
+			    };
+			    xhr.send(formData);
+			});
+
+			// 두 번째 모달 확인 버튼 클릭 시
+			document.querySelector('#second_modal .button-container2 .modal_close_btn2').addEventListener('click', function() {
+			    // 두 번째 모달 닫기
+			    document.getElementById('second_modal').style.display = 'none';
+			    document.getElementById('overlay').style.display = 'none';
+			    
+			    // 이름과 생년월일 입력 필드 초기화
+			    document.getElementById('username').value = '';
+			    document.getElementById('userbirth').value = '';
+			});
+
+			// 첫 번째 모달 닫기 버튼 클릭 시 이벤트 처리
+			document.querySelector('#my_modal .btn-2').addEventListener('click', function() {
+			    // 첫 번째 모달 닫기
+			    document.getElementById('my_modal').style.display = 'none';
+			    document.getElementById('overlay').style.display = 'none';
+			    enableBackgroundClick();
+			});
+    
+			 // 비밀번호 찾기 모달에서 확인 버튼 클릭 시 이벤트 처리
+	    	document.querySelector('#password_modal .btn-3').addEventListener('click', function(event) {
+	       	 	// 폼 데이터 수집
+	        	var formData = new FormData(document.getElementById('password_modal'));
+	        
+	        	// AJAX 요청
+	        	var xhr = new XMLHttpRequest();
+	        	xhr.open('POST', '/member/memberFindPw');
+	        	xhr.onload = function() {
+	            	if (xhr.status === 200) {
+	                	var responseData = JSON.parse(xhr.responseText);
+	                	// 비밀번호를 찾았을 경우
+	                	if (responseData.foundPw) {
+	                    	document.getElementById('secondpw_modal').style.display = 'block';
+	                    	document.getElementById('password_message').innerText = "회원님의 비밀번호는 " + responseData.foundPw + "입니다.";
+	                    	document.getElementById('error_message').style.display = 'none'; // 에러 메시지 숨기기
+	                	} else {
+	                    	document.getElementById('secondpw_modal').style.display = 'block';
+	                    	document.getElementById('error_message').style.display = 'block'; // 에러 메시지 표시하기
+	                    	document.getElementById('password_message').innerText = ''; // 비밀번호 메시지 초기화
+	                	}
+	            	} else {
+	                	console.error('Request failed. Error: ' + xhr.statusText);
+	            	}
+	        	};
+	        	xhr.send(formData);
+	    	});
+
+	    	// 두 번째 모달 확인 버튼 클릭 시
+	    	document.querySelector('#secondpw_modal .button-container4 .modal_close_btn3').addEventListener('click', function() {
+	        	// 두 번째 모달 닫기
+	        	document.getElementById('secondpw_modal').style.display = 'none';
+	        	document.getElementById('overlay').style.display = 'none';
+	        
+	        	// 이름과 생년월일 입력 필드 초기화
+	        	document.getElementById('logid').value = '';
+	        	document.getElementById('user__name').value = '';
+	        	document.getElementById('user__birth').value = '';
+	    	});
+
+		    // 첫 번째 모달 닫기 버튼 클릭 시 이벤트 처리
+		    document.querySelector('#password_modal .btn-4').addEventListener('click', function() {
+		        // 첫 번째 모달 닫기
+		        document.getElementById('password_modal').style.display = 'none';
+		        document.getElementById('overlay').style.display = 'none';
+		        enableBackgroundClick();
+		    });
+	    
+	    
+		    // 모달 창 표시 함수
+		    function showModal(modalId) {
+		        var overlay = document.getElementById('overlay');
+		        var modal = document.getElementById(modalId);
+		        if (overlay && modal) {
+		            overlay.style.display = 'block';
+		            modal.classList.remove('hidden');
+		        } else {
+		            console.error("Modal or overlay element not found.");
+		        }
+		    }
+		
+		    // 확인 버튼 클릭 시 모달 닫기 함수
+		    function closeModal(modalId) {
+		        var modal = document.getElementById(modalId);
+		        var overlay = document.getElementById('overlay');
+		        if (modal && overlay) {
+		            modal.classList.add('hidden');
+		            overlay.style.display = 'none';
+		            // 배경 클릭 활성화
+		            enableBackgroundClick();
+		        } else {
+		            console.error("Modal or overlay element not found.");
+		        }
+		    }
+	    
+		    // 배경 클릭 비활성화 함수
+		    function disableBackgroundClick() {
+		        document.getElementById('overlay').addEventListener('click', preventBackgroundClick);
+		    }
+			
+			// 배경 클릭 활성화 함수
+			function enableBackgroundClick() {
+			    document.getElementById('overlay').removeEventListener('click', preventBackgroundClick);
+			}
+		
+			// 배경 클릭 시 기본 이벤트 방지 함수
+			function preventBackgroundClick(event) {
+			    event.stopPropagation(); // 이벤트 전파 중단
+			    event.preventDefault(); // 기본 이벤트 방지
+			}
+	
+			// 회원가입 모달창 스크립트
+			document.querySelector('.popup_open_btn').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'block';
+			    document.getElementById('fourth_modal').style.display = 'block';
+			});
+			
+			document.querySelector('.modal_close_btn1').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'none';
+			    document.getElementById('fourth_modal').style.display = 'none';
+			});
+			
+			document.querySelector('.modal_cancel_btn').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'none';
+			    document.getElementById('fourth_modal').style.display = 'none';
+			    cancelRegistration();
+			});
+		
+			// 아이디 , 비밀번호 모달창 스크립트
+			document.querySelector('.find-id-btn').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'block';
+			    document.getElementById('my_modal').style.display = 'block';
+			});
+			
+			document.querySelector('.btn-1').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'none';
+			    document.getElementById('second_modal').style.display = 'block';
+			    document.getElementById('my_modal').style.display = 'none';
+			});
+		
+			document.querySelector('.modal_close_btn2').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'none';
+			    document.getElementById('second_modal').style.display = 'none';
+			});
+			
+			document.querySelector('.btn-2').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'none';
+			    document.getElementById('my_modal').style.display = 'none';
+			});
+			
+			// 비밀 번호 모달창
+			document.querySelector('.find-password-btn').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'block';
+			    document.getElementById('password_modal').style.display = 'block';
+			});
+			
+			document.querySelector('.btn-3').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'none';
+			    document.getElementById('secondpw_modal').style.display = 'block';
+			    document.getElementById('password_modal').style.display = 'none';
+			});
+			
+			document.querySelector('.modal_close_btn3').addEventListener('click', function() {
+			    document.getElementById('overlay').style.display = 'none';
+			    document.getElementById('secondpw_modal').style.display = 'none';
+			});
+		
+		
+			function checkPassword() {
+			    var passwordInput = document.getElementById('password');
+			    var confirmPasswordInput = document.getElementById('confirm-password');
+			    var nameInput = document.getElementById('name');
+			    var birthdateInput = document.getElementById('birthdate');
+			    var passwordHelp = document.getElementById('passwordHelp');
+			    var confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
+			    var nameHelp = document.getElementById('nameHelp');
+			    var birthdateHelp = document.getElementById('birthdateHelp');
+			    var signupButton = document.querySelector('.modal_close_btn1');
+			    var emailFindInput = document.getElementById('email_find');
+			    
+			    var password = passwordInput.value;
+			    var confirmPassword = confirmPasswordInput.value;
+			    var name = nameInput.value;
+			    var birthdate = birthdateInput.value;
+			    
+			    var genderHelp = document.getElementById('genderHelp');
+			    var male = document.getElementById('male');
+			    var female = document.getElementById('female');
+			    var signupButton = document.querySelector('.modal_close_btn1');
+			    
+			    var nicknameInput = document.getElementById('nickname');
+			    var nicknameHelp = document.getElementById('nickNameHelp');		      
+			    var nicknameRegex = /^[A-Za-z가-힣0-9_]+$/; // 영문, 한글, 숫자, 언더바(_)	
+			    
+			    // 비밀번호 형식 검사
+			    var passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]).{8,}$/;
+		
+			    // 비밀번호 일치 여부 검사
+			    if (!passwordRegex.test(password)) {
+			      passwordHelp.innerHTML = '최소 하나의 영문 대소문자 숫자 특수문자 포함';
+			      passwordHelp.style.color = 'red';
+			      signupButton.disabled = true;  // 회원가입 버튼 비활성화
+			    } else {
+			      passwordHelp.innerHTML = '';
+			      passwordHelp.style.color = 'green';
+		
+			      if (password !== confirmPassword) {
+			        confirmPasswordHelp.innerHTML = '비밀번호가 일치하지 않습니다';
+			        confirmPasswordHelp.style.color = 'red';
+			        signupButton.disabled = true;  // 회원가입 버튼 비활성화
+			      } else {
+			        confirmPasswordHelp.innerHTML = ''; // 일치 메시지 초기화
+			        signupButton.disabled = false; // 회원가입 버튼 활성화
+			      }
+		
+			      // 이름 유효성 검사
+			      var nameRegex = /^[a-zA-Z가-힣]*$/;
+		
+			      if (!nameRegex.test(name)) {
+			        nameHelp.innerHTML = '올바른 이름 형식이 아닙니다';
+			        nameHelp.style.color = 'red';
+			        signupButton.disabled = true;  // 회원가입 버튼 비활성화
+			      } else {
+			        nameHelp.innerHTML = ''; // 메시지 초기화
+			        signupButton.disabled = false; // 회원가입 버튼 활성화
+			      }
+		
+			      // 생년월일 유효성 검사
+			      var birthdateRegex = /^\d{6}$/;
+		
+			      if (!birthdateRegex.test(birthdate)) {
+			        birthdateHelp.innerHTML = '생년월일 6자리를 입력해주십시오';
+			        birthdateHelp.style.color = 'red';
+			        signupButton.disabled = true;  // 회원가입 버튼 비활성화
+			      } else {
+			        birthdateHelp.innerHTML = ''; // 메시지 초기화
+			        signupButton.disabled = false; // 회원가입 버튼 활성화
+			      }
+			      
+			      if (!male.checked && !female.checked) {
+				      genderHelp.innerHTML = '성별을 선택해주십시오';
+				      genderHelp.style.color = 'red';
+				      signupButton.disabled = true;  // 회원가입 버튼 비활성화
+				    } else {
+				      genderHelp.innerHTML = ''; // 메시지 초기화
+				      signupButton.disabled = false; // 회원가입 버튼 활성화
+				    }
+			      
+			   // 이메일 앞자리 유효성 검사
+			      if (emailFindInput.value.trim() === '') {
+			        emailHelp.innerHTML = '이메일을 입력하세요';
+			        emailHelp.style.color = 'red';
+			        signupButton.disabled = true;  // 회원가입 버튼 비활성화
+			      } else {
+			        emailHelp.innerHTML = ''; // 메시지 초기화
+			      }
+			   
+			      
+	
+			      if (!nicknameRegex.test(nicknameInput.value)) {
+			          nicknameHelp.innerText = '영문, 한글, 숫자, 언더바(_) 만 허용';
+			          nicknameHelp.style.color = 'red';
+			          signupButton.disabled = true; // 버튼 비활성화
+			      } else {
+			          nicknameHelp.innerText = '';
+			          signupButton.disabled = false; // 버튼 활성화
+			      }
+			    }
+			  }
+			
+			 // 취소 버튼 클릭 시 호출되는 함수
+		    function cancelRegistration() {
+		        // 폼 초기화 또는 입력된 데이터 초기화 로직을 추가
+		        var signupForm = document.getElementById('fourth_modal');
+		        if (signupForm) {
+		            signupForm.reset(); // 폼의 입력 데이터 초기화
+		            // 또는 필요에 따라 개별적으로 값을 초기화할 수 있음
+		            // document.getElementById('email_find').value = '';
+		            // document.getElementById('password').value = '';
+		            // ... (다른 필드들에 대한 초기화 추가)
+		        } else {
+		            console.error("Signup form not found.");
+		        }
+		
+			 }
+			 
+			 
+			 // 회가 중복체크
+		    function checkDuplicateId() {
+		        var logId = document.getElementById('email_find').value; // assuming email_find is your id input field
+		        var emailHelp = document.getElementById('emailHelp');
+		        
+		        // Perform an Ajax request to check duplicate id
+		        $.ajax({
+		            url: '/member/checkDuplicateId',
+		            method: 'GET',
+		            data: { logId: logId },
+		            success: function (response) {
+		                emailHelp.innerText = response;
+		            },
+		            error: function (error) {
+		                console.error('Error checking duplicate id:', error.responseText);
+		            }
+		        });
+		    }
+	
+		    function checkDuplicateNickname() {
+		        var nickname = document.getElementById('nickname').value;
+		        var nickNameHelp = document.getElementById('nickNameHelp');
+	
+		        // Perform an Ajax request to check duplicate nickname
+		        $.ajax({
+		            url: '/member/checkDuplicateNickname',
+		            method: 'GET',
+		            data: { nickname: nickname },
+		            success: function (response) {
+		                nickNameHelp.innerText = response;
+		            },
+		            error: function (error) {
+		                console.error('Error checking duplicate nickname:', error.responseText);
+		            }
+		        });
+		    }
+	    /*]]>*/    
+	</script>
+	<script src="/webapp/js/shining_stars.js"></script>
+    <script src="/webapp/js/login_model.js"></script>
+	</body>
+
+</html>

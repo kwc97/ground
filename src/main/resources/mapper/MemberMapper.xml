@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper SYSTEM "C:\kwcSpring\springRep\ground\src\main\resources\mapper\mybatis-3-mapper.dtd">
+
+<!-- <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd"> -->
+<mapper namespace="com.ground.mapper.MemberMapper">
+	
+	<insert id="insertMember" parameterType="MemberDTO">
+		<!--  INSERT INTO member (name, id, phone) VALUES ('이순신', 'mr.soon', '010-111-2222'); -->
+		<![CDATA[ 
+			 INSERT INTO member (
+		         user_id,
+		         log_id,
+		         log_pw,
+		         user_name,
+		         user_gender,
+		         user_birth,
+		         img_path,
+		         nickname,
+		         text,
+		         ac_num,
+		         createDate,
+		         updateDate
+		      ) VALUES (
+		         #{user_id},
+		         #{log_id},
+		         #{log_pw},
+		         #{user_name},
+		         #{user_gender},
+		         #{user_birth},
+		         #{img_path},
+		         #{nickname},
+		         #{text},
+		         #{ac_num},
+		         #{createDate},
+		         #{updateDate}
+		      );
+		]]>
+	</insert>
+	
+	<select id="getCountById" resultType="int" parameterType="String">
+        <![CDATA[
+        	SELECT COUNT(*) FROM members WHERE log_id = #{logId}
+    	]]>
+    </select>
+
+    <select id="getCountByNickname" resultType="int" parameterType="String">
+        <![CDATA[
+        	SELECT COUNT(*) FROM members WHERE nickname = #{nickname}
+    	]]>
+    </select>
+	
+	<select id="selectMemberOne" parameterType="int" resultType="MemberDTO">
+		<![CDATA[ 
+			SELECT * FROM member WHERE user_id = #{user_id};
+		]]>
+	</select>
+	
+	<update id="updateMember" parameterType="MemberDTO">
+		<![CDATA[ 
+			UPDATE
+					member
+			SET
+		         log_pw = #{log_pw},
+		         text = #{text},
+		         img_path = #{img_path},
+		         nickname = #{nickname},
+		         updateDate = #{updateDate}
+		         
+			WHERE
+					user_id = #{user_id};		
+		]]>
+	</update>
+	
+	<select id="selectMemberAll" resultType="MemberDTO">
+		<![CDATA[ 
+			SELECT
+				*
+			FROM
+				member;		
+		]]>	
+	</select>
+	
+	<delete id="deleteMemberOne" parameterType="int">
+		<![CDATA[ 
+			DELETE FROM
+				member
+			WHERE
+				user_id = #{user_id};
+		]]>	
+	</delete>
+	
+	<select id="authenticateAsLogid" resultType="String">
+		<![CDATA[ 
+			SELECT
+				log_id
+			FROM
+				member
+			WHERE user_name =#{user_name} AND user_birth =#{user_birth};		
+		]]>	
+	</select>
+	
+	<select id="authenticateAsLogPw" parameterType="MemberDTO" resultType="String">
+		<![CDATA[ 
+	        SELECT
+	            log_pw
+	        FROM
+	            member
+	        WHERE log_id =#{log_id} AND user_name =#{user_name} AND user_birth =#{user_birth};		
+		]]>	
+	</select>
+	
+	<select id="isNicknameExists" resultType="int" parameterType="String">
+        <![CDATA[
+        	SELECT COUNT(*) FROM member WHERE nickname = #{nickname}
+    	]]>
+    </select>
+    
+   <select id="isNickname" resultType="int" parameterType="String">
+        <![CDATA[
+        	SELECT COUNT(*) FROM member WHERE nickname = #{nickname}
+    	]]>
+    </select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>개인정보 수정</title>
+        <link rel="stylesheet" href="/webapp/css/editinfo.css"> 
+        <link rel="stylesheet" href="/webapp/css/modal_page.css"> 
+		<script>
+			/* document.addEventListener("DOMContentLoaded", function () {
+	            // 로고 엘리먼트 찾기
+	            var logoElement = document.getElementById("logo");
+	
+	            // 로고 클릭 이벤트 처리
+	            logoElement.addEventListener("click", function () {
+	                // /mainpage/mainpage로 이동
+	                window.location.href = '/mainpage/mainpage';
+	            });
+	        });	 */
+			
+			function limitText(element, maxLength) {
+		        if (element.value.length > maxLength) {
+		            element.value = element.value.slice(0, maxLength);
+		        }
+		    }
+			
+			function checkNickname() {
+			    var nicknameInput = document.getElementById('nickname');
+			    var nicknameError = document.getElementById('nicknameError');
+
+			    if (nicknameInput.value.length === 0) {
+			        nicknameError.innerText = '닉네임을 입력해주세요.';
+			        nicknameError.style.color = 'red';
+			    } else {
+			        nicknameError.innerText = '';
+			    }
+			}
+		</script>      
+    </head>
+    
+    
+    <body>
+        <div id="container">
+        <header id="header">
+            
+            <div class="logo">            
+                <a id="logo" onclick="history.go(-2);">
+                    <img src="/webapp/img/ground.png" alt="로고" width="40" height="40">
+                    <h1>Ground</h1>
+                </a>
+            </div>
+           
+            
+            
+        </header>  
+        <aside id="left-sidebar">
+            <table th:object="${memberDTO}">
+              <tr>
+                <td colspan="2"><img th:src="${memberDTO.img_path}" alt="" width="100px" style="border-radius: 50%;"></td>
+              </tr>
+              <tr>
+                <td colspan="2" th:text="${memberDTO.nickname}">닉네임</td>
+              </tr>
+              <tr>
+                <td colspan="2" th:text="${memberDTO.text}" >상태 메시지</td>
+              </tr>
+              <tr>
+                <td><a href="index.html">팔로우</a></td>
+                <td><a href="index.html">팔로잉</a></td>
+              </tr>
+              <tr>
+                <td><a href="index.html" th:text="${follownum}">123,456</a></td>
+                <td><a href="index.html" th:text="${followingnum}">123,456</a></td>
+              </tr>
+              <tr id="side-menu">
+                <td colspan="2"><a th:href="@{/board/list}"><img class="ic-search" >&#127879; My home</a></td>
+              </tr>
+              <tr id="side-menu">
+                <td colspan="2"><a onclick="history.go(-2);"><img class="ic-search" >&#127969; Main</a></td>
+              </tr>
+              <tr id="side-menu">
+                <td colspan="2"><a href="index.html"><img class="ic-search" >&#128490; 챗봇</a></td>
+              </tr>
+              <tr id="side-menu">
+                <td colspan="2">
+                	<a th:href="@{/mainpage/editinfo(log_id=${memberDTO.log_id}, nickname=${memberDTO.nickname}, text=${memberDTO.text})}">
+                		<img class="ic-search" oninput="navigateToOtherPage()">&#128295;개인정보수정
+                	</a>
+                </td>
+              </tr>
+            </table>
+          </aside>
+
+            <div id="list">
+                <form th:action="@{/member/memberUpdateOk}" th:object="${memberDTO}" method="POST">
+                    <table class="tg" id="UserTable">                       
+                        <thead>
+                            <tr>
+                                <td colspan="3" class="makeOutLine">
+                                    <h3 id="UserInfoChangeH3">회원 정보 수정</h3>
+                                </td>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            
+                            <tr>
+                                <td class="tg-0pky firstBox makeOutLine" >프로필 이미지</td>                                                  
+                                <td class="tg-0pky makeOutLine" colspan="2">                                
+                                    <button type="button" id="changePasswordBtn">프로필 이미지 변경</button>
+                                </td>
+                            </tr>
+                            
+                                                        
+                            <tr>
+                                <td class="tg-0pky firstBox makeOutLine">닉네임</td>
+								<td class="tg-0pky makeOutLine" colspan="2">
+								    <input type="text" name="nickname" placeholder="nickname" class="aboutUserInfoEdit" id="nickname" th:field="*{nickname}" required autocomplete="off" onblur="checkNickname()">
+								    <p id="nicknameError" class="error-message"  th:text="${msg}" style="color: red;"></p>
+								</td>
+                            </tr>                           
+                           
+                            <tr>
+                                <td class="tg-0pky firstBox makeOutLine" >비밀번호</td>                                                  
+                                <td class="tg-0pky makeOutLine" colspan="2">                                
+                                    <input type="text" name="log_pw" placeholder="log_pw" class="aboutUserInfoEdit" id="log_pw" th:field="*{log_pw}" required autocomplete="off">
+                                </td>
+                             </tr>
+                             
+                             <tr>
+                                <td class="tg-0pky firstBox makeOutLine">상태메세지</td>
+                                <td class="tg-0pky makeOutLine" colspan="2"><textarea class="aboutUserInfoEdit" id="UpdateMEMBERNickname" placeholder="상태메세지" rows="1" cols="40" oninput="limitText(this, 30)" th:field="*{text}" required autocomplete="off"></textarea></td>
+                                <td><input type="hidden" name="user_id" th:value="*{log_id}"></td>
+   						    	<td><input type="hidden" name="log_id" th:value="*{log_id}"></td>
+                            </tr>
+                            
+                            
+                        </tbody>
+                    </table>
+                    <div class="updateUserInfo">
+		                <input type="submit" value="회원 정보 업데이트" id="updateUserInfo">
+		            </div>
+                </form>
+            </div>       
+        </div>
+              
+        
+    
+    
+            
+    </body>
+
+</html>
